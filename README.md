@@ -69,25 +69,25 @@ containing methods to initialise a socket, send and receive messages.
 
 ## models
 
-### AdminPage
-### ChannelCreatorPage
-### ChannelUsersPage
-### GroupCreatorPage
-### GroupUsersPage
-### RoleEditorPage
-### UserCreatorPage
-### ChatPage
-### LoginPage
-### TabsPage
+AdminPage
+ChannelCreatorPage
+ChannelUsersPage
+GroupCreatorPage
+GroupUsersPage
+RoleEditorPage
+UserCreatorPage
+ChatPage
+LoginPage
+TabsPage
 
 ## routes
 stored within an array in app-routing.module.ts. Lazy loading is utilized to speed up application load time with loadChildren.
 
-### path: ‘ ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
-### path: ‘ ‘, loadChildren: () => import(‘./tabs/tabs.module’).then((m) = > m.TabsPageModule)
-### path: ‘login ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
-### path: ‘chat‘, loadChildren: () => import(‘./chat/chat.module’).then((m) = > m.ChatPageModule)
-### path: ‘admin‘, loadChildren: () => import(‘./admin/admin.module’).then((m) = > m.AdminPageModule)
+path: ‘ ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
+path: ‘ ‘, loadChildren: () => import(‘./tabs/tabs.module’).then((m) = > m.TabsPageModule)
+path: ‘login ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
+path: ‘chat‘, loadChildren: () => import(‘./chat/chat.module’).then((m) = > m.ChatPageModule)
+path: ‘admin‘, loadChildren: () => import(‘./admin/admin.module’).then((m) = > m.AdminPageModule)
 
 # node server architecture
 
@@ -198,46 +198,44 @@ new channel id, used when calling the create new channel function.
 defining the port used for the server. 
 
 
-# routes
+## routes
 
-### app.post("/api/login"... parameters: email, password... returns user authentication.
+app.get("/api/users"... returns users.
 
-### app.get("/api/users"... returns users.
+app.post("/api/groupUsers"... parameters: group... returns groups for user.
 
-### app.post("/api/groupUsers"... parameters: group... returns groups for user.
+app.post("/api/channelUsers"... parameters: channel... returns channels for user.
 
-### app.post("/api/channelUsers"... parameters: channel... returns channels for user.
+app.get("/api/groups"... returns groups.
 
-### app.get("/api/groups"... returns groups.
+app.post("/api/groupsForUser"... parameters: user, groupsForUser, groupUser... returns groups user belongs to.
 
-### app.post("/api/groupsForUser"... parameters: user, groupsForUser, groupUser... returns groups user belongs to.
+app.get("/api/channels"... returns channels.
 
-### app.get("/api/channels"... returns channels.
+app.post("/api/channelsForUser"... parameters: group, user, channelsForUser, channelUser... returns channles user belongs to for a specific group. 
 
-### app.post("/api/channelsForUser"... parameters: group, user, channelsForUser, channelUser... returns channles user belongs to for a specific group. 
+app.post("/api/createUser"... parameters: newUser{id, name, email, password, role}... returns new user object.
 
-### app.post("/api/createUser"... parameters: newUser{id, name, email, password, role}... returns new user object.
+app.post("/api/createGroup"... parameters: newGroup{id, name, users}... returns new group object.
 
-### app.post("/api/createGroup"... parameters: newGroup{id, name, users}... returns new group object.
+app.post("/api/createChannel"... parameters: newChannel{id, groupID, name, users, messages}...returns new channel object.
 
-### app.post("/api/createChannel"... parameters: newChannel{id, groupID, name, users, messages}...returns new channel object.
+app.post("/api/deleteUser"... parameters: index... returns boolean.
 
-### app.post("/api/deleteUser"... parameters: index... returns boolean.
+app.post("/api/deleteGroup"... parameters: index... returns boolean.
 
-### app.post("/api/deleteGroup"... parameters: index... returns boolean.
+app.post("/api/deleteChannel"... parameters: index... returns boolean.
 
-### app.post("/api/deleteChannel"... parameters: index... returns boolean.
+app.post("/api/addGroupUser"... parameters: userId, user, groupId, group... returns new user to group.
 
-### app.post("/api/addGroupUser"... parameters: userId, user, groupId, group... returns new user to group.
+app.post("/api/removeGroupUser... parameters: userId, user, groupId, group... returns boolean.
 
-### app.post("/api/removeGroupUser... parameters: userId, user, groupId, group... returns boolean.
+app.post("/api/addChannelUser"... paramters: userId, user, channelId, channel... returns new user to channel.
 
-### app.post("/api/addChannelUser"... paramters: userId, user, channelId, channel... returns new user to channel.
+app.post("/api/removeChannelUser"... paramters: userId, user, channelId, channel... returns boolean.
 
-### app.post("/api/removeChannelUser"... paramters: userId, user, channelId, channel... returns boolean.
+app.post("/api/changeRole"... parameters: id, role, user... returns edit user role.
 
-### app.post("/api/changeRole"... parameters: id, role, user... returns edit user role.
+app.post("/api/messages"... parameters: channel... returns messages for channel.
 
-### app.post("/api/messages"... parameters: channel... returns messages for channel.
-
-### app.post("/api/sendMessage"... parameters: channel... returns messages to channel
+app.post("/api/sendMessage"... parameters: channel... returns messages to channel
