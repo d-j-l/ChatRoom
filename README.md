@@ -1,23 +1,27 @@
 # phase1
-3813ICT Software Frameworks - Assignment 1 - server and front end for a chat system. 
-## server
+3813ICT Software Frameworks - Assignment 1 - server and front end for a chat system.
+
+### server
 contains files required for communcation between client and server including web sockets.
 install dependencies with "npm install" and start server with "node server.js".
 
-## client
+### client
 contains files required for displaying web app.
 install dependencies with "npm install" and start client app with "ng serve".
 
 # server side data structure
 
-### users, var users – stored as objects with properties written in name: value pairs separated by commas held within an array literal. 
+### users, var users
+Stored as objects with properties written in name: value pairs separated by commas held within an array literal. 
 Properties include id, name, email, password and role.
 
-### groups, var groups – stored as objects with properties written in name: value pairs separated by commas held within an array literal. 
+### groups, var groups
+Stored as objects with properties written in name: value pairs separated by commas held within an array literal. 
 Properties include id, name and users. The users property stores each user as an object written in name: value pairs separated by commas held within an array literal. 
 Properties of each user object include id, name, email, password and role. 
 
-### channels , var channels– stored as objects written in name: value pairs separated by commas held within an array literal. 
+### channels , var channels
+Stored as objects written in name: value pairs separated by commas held within an array literal. 
 Properties include id, groupId, name, users and messages. 
 The users property stores each user as objects written in name: value pairs separated by commas held within an array literal. 
 Properties of each user object include id, name, email, password and role. The messages property stores messages in an empty array literal. 
@@ -27,9 +31,9 @@ Properties of each user object include id, name, email, password and role. The m
 ### ionic framework
 a library of optimized user interface components written in HTML, CSS and Javascript.  Allows for faster creation of web applications.
 
-## components
+### components
 
-### admin
+#### admin
 allows view of users, groups and channels depending on permissions given by user role.
 
 #### channel-creator
@@ -50,24 +54,24 @@ edit role of user from drop down menu.
 #### user-creator
 allowing text input for the creation of a new user, with name, email and password, with drop down menu to select role.
 
-### chat
+#### chat
 allows view of groups, users and messages depending on access given to the user.
 
 #### messages
 view for sending and recieving messages.
 
-### login
+#### login
 allows text input for user email and password, providing user authentication. 
 
-### tabs
+#### tabs
 allows switching between admin and chat components. 
 
-## services
+### services
 
-### socket.service
+#### socket.service
 containing methods to initialise a socket, send and receive messages. 
 
-## models
+### models
 
 AdminPage
 ChannelCreatorPage
@@ -80,125 +84,125 @@ ChatPage
 LoginPage
 TabsPage
 
-## routes
+### routes
 stored within an array in app-routing.module.ts. Lazy loading is utilized to speed up application load time with loadChildren.
 
-path: ‘ ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
-path: ‘ ‘, loadChildren: () => import(‘./tabs/tabs.module’).then((m) = > m.TabsPageModule)
-path: ‘login ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
-path: ‘chat‘, loadChildren: () => import(‘./chat/chat.module’).then((m) = > m.ChatPageModule)
-path: ‘admin‘, loadChildren: () => import(‘./admin/admin.module’).then((m) = > m.AdminPageModule)
+#### path: ‘ ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
+#### path: ‘ ‘, loadChildren: () => import(‘./tabs/tabs.module’).then((m) = > m.TabsPageModule)
+#### path: ‘login ‘, loadChildren: () => import(‘./login/login.module’).then((m) = > m.LoginPageModule)
+#### path: ‘chat‘, loadChildren: () => import(‘./chat/chat.module’).then((m) = > m.ChatPageModule)
+#### path: ‘admin‘, loadChildren: () => import(‘./admin/admin.module’).then((m) = > m.AdminPageModule)
 
 # node server architecture
 
-## modules
+### modules
 
-### express
+#### express
 web application framework for Node.js.
-### cors
+#### cors
 cross-origin resource sharing, providing relaxed security applied to an API (application programming interface, a connection between computers). 
-### http
+#### http
 allows Node.js to transfer data over the Hypertext Transfer Protocol (HTTP).
-### socket.io
+#### socket.io
 allows realtime, bi-directional communication between web clients and servers.
-### body-parser
+#### body-parser
 responsible for parsing incoming request bodies in a middleware before it is handled.
 
-## functions
+### functions
 
-### login, /api/login
+#### login, /api/login
 provides user authentication.
 
-### get all users, /api/users
+#### get all users, /api/users
 returns all users.
 
-### get group’s users, /api/groupUsers
+#### get group’s users, /api/groupUsers
 returns users of a group.
 
-### get channel’s users, /api/channelUsers
+#### get channel’s users, /api/channelUsers
 returns users of a channel.
 
-### get all groups, /api/groups
+#### get all groups, /api/groups
 returns all groups.
 
-### get all groups that provided user belongs to, /api/groupsForUser
+#### get all groups that provided user belongs to, /api/groupsForUser
 returns groups a user belongs to.
 
-### get all channels, /api/channels
+#### get all channels, /api/channels
 returns all channels.
 
-### get all channels the user belongs to for the specified group, /api/channelsForUser 
+#### get all channels the user belongs to for the specified group, /api/channelsForUser 
 returns channels a user belongs inside the group.
 
-### create new user, /api/createUser 
+#### create new user, /api/createUser 
 adds a user to the users array.
 
-### create new group, /api/createGroup 
+#### create new group, /api/createGroup 
 adds a group to the groups array.
 
-### create new channel, /api/createChannel 
+#### create new channel, /api/createChannel 
 adds a channel to the channels array.
 
-### delete user, /api/deleteUser 
+#### delete user, /api/deleteUser 
 removes user from users array.
 
-### delete group, /api/deleteGroup 
+#### delete group, /api/deleteGroup 
 removes group from groups array.
 
-### delete channel, /api/deleteChannel 
+#### delete channel, /api/deleteChannel 
 removes channel from channels array.
 
-### add user to group, /api/deleteGroupUser 
+#### add user to group, /api/deleteGroupUser 
 adds a user to the users array inside the groups array. 
 
-### remove user from group, /api/removeGroupUser
+#### remove user from group, /api/removeGroupUser
 removes a user from the users array inside the groups array.
 
-### add user to channel, /api/addChannelUser
+#### add user to channel, /api/addChannelUser
 adds a user to the users array inside the channels array.
 
-### remove user from channel, /api/removeChannelUser 
+#### remove user from channel, /api/removeChannelUser 
 removes a user from the users array inside the channels array.
 
-### edit role, /api/changeRole 
+#### edit role, /api/changeRole 
 changes the role of a user of the users array.
 
-### get messages, /api/messages 
+#### get messages, /api/messages 
 returns messages of a channel.
 
-### send messages, /api/sendMessage
+#### send messages, /api/sendMessage
 sends messages to a channel. 
 
-## files
+### files
 
-### server.js
+#### server.js
 main server file containing all the necessary modules (body-parser, cors, express, socket.io), applying modules, defining ports, socket setup, data structures (users, groups, channels), global variables and functions.
 
-### _listen.js
+#### _listen.js
 setup to listen to requests on port.
 
-### ¬_socket.js
+#### _socket.js
 setup to handle requests, respond to message events and emit data to connected clients. 
 
-### package.json
+#### package.json
 lists the dependencies of the server.
 
-## global variables
+### global variables
 	
-### newUid
+#### newUid
 new user id, used when calling the create new user function.
 
-### newGid
+#### newGid
 new group id, used when calling the create new group function.
 
-### newCid
+#### newCid
 new channel id, used when calling the create new channel function.
 
-### PORT
+#### PORT
 defining the port used for the server. 
 
 
-## routes
+### routes
 
 app.get("/api/users"... returns users.
 
