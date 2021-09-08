@@ -8,9 +8,7 @@ install dependencies with "npm install" and start server with "node server.js".
 contains files required for displaying web app.
 install dependencies with "npm install" and start client app with "ng serve".
 
-# data structures
-
-## server side
+# server side data structure
 
 ### users, var users – stored as objects with properties written in name: value pairs separated by commas held within an array literal. 
 Properties include id, name, email, password and role.
@@ -26,7 +24,7 @@ Properties of each user object include id, name, email, password and role. The m
 
 # angular architecture
 
-## ionic framework
+### ionic framework
 a library of optimized user interface components written in HTML, CSS and Javascript.  Allows for faster creation of web applications.
 
 ## components
@@ -202,44 +200,44 @@ defining the port used for the server.
 
 # routes
 
-## app.post("/api/login"... parameters: email, password... returns user authentication.
+### app.post("/api/login"... parameters: email, password... returns user authentication.
 
-## app.get("/api/users"... returns users.
+### app.get("/api/users"... returns users.
 
-## app.post("/api/groupUsers"... parameters: group... returns groups for user.
+### app.post("/api/groupUsers"... parameters: group... returns groups for user.
 
-## app.post("/api/channelUsers"... parameters: channel... returns channels for user.
+### app.post("/api/channelUsers"... parameters: channel... returns channels for user.
 
-## app.get("/api/groups"... returns groups.
+### app.get("/api/groups"... returns groups.
 
-## app.post("/api/groupsForUser"... parameters: user, groupsForUser, groupUser... returns groups user belongs to.
+### app.post("/api/groupsForUser"... parameters: user, groupsForUser, groupUser... returns groups user belongs to.
 
-## app.get("/api/channels"... returns channels.
+### app.get("/api/channels"... returns channels.
 
-## app.post("/api/channelsForUser"... parameters: group, user, channelsForUser, channelUser... returns channles user belongs to for a specific group. 
+### app.post("/api/channelsForUser"... parameters: group, user, channelsForUser, channelUser... returns channles user belongs to for a specific group. 
 
-## app.post("/api/createUser"... parameters: newUser{id, name, email, password, role}... returns new user object.
+### app.post("/api/createUser"... parameters: newUser{id, name, email, password, role}... returns new user object.
 
-## app.post("/api/createGroup"... parameters: newGroup{id, name, users}... returns new group object.
+### app.post("/api/createGroup"... parameters: newGroup{id, name, users}... returns new group object.
 
-## app.post("/api/createChannel"... parameters: newChannel{id, groupID, name, users, messages}...returns new channel object.
+### app.post("/api/createChannel"... parameters: newChannel{id, groupID, name, users, messages}...returns new channel object.
 
-## app.post("/api/deleteUser"... parameters: index... returns boolean.
+### app.post("/api/deleteUser"... parameters: index... returns boolean.
 
-## app.post("/api/deleteGroup"... parameters: index... returns boolean.
+### app.post("/api/deleteGroup"... parameters: index... returns boolean.
 
-## app.post("/api/deleteChannel"... parameters: index... returns boolean.
+### app.post("/api/deleteChannel"... parameters: index... returns boolean.
 
-## app.post("/api/addGroupUser"... parameters: userId, user, groupId, group... returns new user to group.
+### app.post("/api/addGroupUser"... parameters: userId, user, groupId, group... returns new user to group.
 
-## app.post("/api/removeGroupUser... parameters: userId, user, groupId, group... returns boolean.
+### app.post("/api/removeGroupUser... parameters: userId, user, groupId, group... returns boolean.
 
-## app.post("/api/addChannelUser"... paramters: userId, user, channelId, channel... returns new user to channel.
+### app.post("/api/addChannelUser"... paramters: userId, user, channelId, channel... returns new user to channel.
 
-## app.post("/api/removeChannelUser"... paramters: userId, user, channelId, channel... returns boolean.
+### app.post("/api/removeChannelUser"... paramters: userId, user, channelId, channel... returns boolean.
 
-## app.post("/api/changeRole"... parameters: id, role, user... returns edit user role.
+### app.post("/api/changeRole"... parameters: id, role, user... returns edit user role.
 
-## app.post("/api/messages"... parameters: channel... returns messages for channel.
+### app.post("/api/messages"... parameters: channel... returns messages for channel.
 
-## app.post("/api/sendMessage"... parameters: channel... returns messages to channel
+### app.post("/api/sendMessage"... parameters: channel... returns messages to channel
