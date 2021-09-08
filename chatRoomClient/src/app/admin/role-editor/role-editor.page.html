@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Role Editor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked"> Role </ion-label>
+
+    <ion-select (ionChange)="roleChanged($event)">
+      <ion-select-option value="user">User</ion-select-option>
+      <ion-select-option value="groupAssis">Group Assis</ion-select-option>
+      <ion-select-option value="groupAdmin">Group Admin</ion-select-option>
+      <ion-select-option value="superAdmin">Super Admin</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-row class="ion-align-items-center">
+    <ion-col class="ion-text-center">
+      <ion-button
+        shape="round"
+        [disabled]="!role"
+        (click)="changeRole()"
+      >
+        Edit Role
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

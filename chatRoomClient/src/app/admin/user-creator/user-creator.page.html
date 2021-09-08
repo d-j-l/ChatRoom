@@ -1,0 +1,41 @@
+<ion-list>
+  <ion-list-header> Create User </ion-list-header>
+
+  <ion-item>
+    <ion-label position="stacked"> Name </ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked"> Email </ion-label>
+    <ion-input type="text" [(ngModel)]="email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked"> Password </ion-label>
+    <ion-input type="text" [(ngModel)]="password"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked"> Role </ion-label>
+
+    <ion-select (ionChange)="roleChanged($event)">
+      <ion-select-option value="user">User</ion-select-option>
+      <ion-select-option value="groupAssis">Group Assis</ion-select-option>
+      <ion-select-option value="groupAdmin">Group Admin</ion-select-option>
+      <ion-select-option value="superAdmin">Super Admin</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
+
+<ion-row class="ion-align-items-center">
+  <ion-col class="ion-text-center">
+    <ion-button
+      shape="round"
+      [disabled]="!name || !email || !password || !role"
+      (click)="createUser()"
+    >
+      Create User
+    </ion-button>
+  </ion-col>
+</ion-row>

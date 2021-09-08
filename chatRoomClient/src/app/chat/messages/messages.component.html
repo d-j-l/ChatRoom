@@ -1,0 +1,37 @@
+<ion-list class="messages-list">
+  <div *ngFor="let message of messages">
+    <ion-item
+      class="message other-user"
+      lines="none"
+      *ngIf="message.userId !== currentUser.id"
+    >
+      <ion-label position="stacked"> {{ message.userName }} </ion-label>
+      <p>{{ message.content }}</p>
+    </ion-item>
+
+    <ion-item
+      class="message current-user"
+      *ngIf="message.userId === currentUser.id"
+    >
+      <ion-label position="stacked"> {{ message.userName }} </ion-label>
+      <p>{{ message.content }}</p>
+    </ion-item>
+  </div>
+</ion-list>
+
+<ion-item class="send-message" lines="none">
+  <ion-input
+    type="text"
+    placeholder="Write a message"
+    [(ngModel)]="messageContent"
+  ></ion-input>
+
+  <ion-button
+    slot="end"
+    shape="round"
+    [disabled]="!messageContent"
+    (click)="sendMessage()"
+  >
+    Send
+  </ion-button>
+</ion-item>

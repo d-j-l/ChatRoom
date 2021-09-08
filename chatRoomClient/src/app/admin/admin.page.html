@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Admin</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="logOut()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="segmentType">
+    <ion-segment-button
+      value="users"
+      [disabled]="!currentUser || currentUser.role !== 'Super Admin'"
+    >
+      <ion-label>Users</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button
+      value="groups"
+      [disabled]="!currentUser || !(currentUser.role === 'Super Admin' || currentUser.role === 'Group Admin')"
+    >
+      <ion-label>Groups</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button
+      value="channels"
+      [disabled]="!currentUser || !(currentUser.role === 'Super Admin' || currentUser.role === 'Group Admin' || currentUser.role === 'Group Assis')"
+    >
+      <ion-label>Channels</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!--users-->
+  <div [ngSwitch]="segmentType">
+    <div *ngSwitchCase="'users'">
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-text-center">
+          <ion-button shape="round" (click)="createUser()">
+            Create User
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!--user list-->
+      <ion-list>
+        <ion-item *ngFor="let user of users">
+          <div slot="start">
+            <ion-label>{{ user.name }}</ion-label>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Role:</strong> {{ user.role }}</p>
+          </div>
+
+          <div slot="end">
+            <!--edit role-->
+            <ion-button fill="clear" (click)="editRole(user)">
+              <ion-icon name="person-outline"></ion-icon>
+            </ion-button>
+
+            <!--delete user-->
+            <ion-button fill="clear" (click)="deleteUser(user)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!--groups-->
+    <div *ngSwitchCase="'groups'">
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-text-center">
+          <ion-button shape="round" (click)="createGroup()">
+            Create Group
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!--group list-->
+      <ion-list>
+        <ion-item *ngFor="let group of groups">
+          <div slot="start">
+            <ion-label>{{ group.name }}</ion-label>
+            <p><strong>Users:</strong> {{ group.users.length }}</p>
+          </div>
+
+          <div slot="end">
+            <!--add group user-->
+            <ion-button fill="clear" (click)="showGroupUsers(group)">
+              <ion-icon name="people-outline"></ion-icon>
+            </ion-button>
+
+            <!--delete group-->
+            <ion-button fill="clear" (click)="deleteGroup(group)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!--channels-->
+    <div *ngSwitchCase="'channels'">
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-text-center">
+          <ion-button shape="round" (click)="createChannel()">
+            Create Channel
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!--channel list-->
+      <ion-list>
+        <ion-item *ngFor="let channel of channels">
+          <div slot="start">
+            <ion-label>{{ channel.name }}</ion-label>
+
+            <p><strong>Parent Group:</strong> {{ channel.parentGroup.name }}</p>
+            <p><strong>Users:</strong> {{ channel.users.length }}</p>
+          </div>
+
+          <div slot="end">
+            <!---->
+            <ion-button fill="clear" (click)="showChannelUsers(channel)">
+              <ion-icon name="albums-outline"></ion-icon>
+            </ion-button>
+
+            <!--delete channel-->
+            <ion-button fill="clear" (click)="deleteChannel(channel)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

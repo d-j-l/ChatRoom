@@ -1,0 +1,13 @@
+.separator {
+  height: calc(100vh - 114px);
+  width: 2px;
+  background-color: black;
+}
+
+.selected {
+  --background: #3880ff;
+
+  ion-label {
+    color: white;
+  }
+}

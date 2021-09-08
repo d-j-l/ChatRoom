@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Group Users</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-align-items-center">
+    <ion-col class="ion-text-center">
+      <ion-select (ionChange)="userChanged($event)">
+        <ion-select-option *ngFor="let user of availableUsers">
+          {{ user.name }}
+        </ion-select-option>
+      </ion-select>
+
+      <ion-button
+        shape="round"
+        (click)="addGroupUser()"
+        [disabled]="!selectedUser"
+      >
+        Add User
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-list>
+    <ion-item *ngFor="let user of groupUsers">
+      <div slot="start">
+        <ion-label>{{ user.name }}</ion-label>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Role:</strong> {{ user.role }}</p>
+      </div>
+
+      <div slot="end">
+        <ion-button fill="clear" (click)="removeGroupUser(user)">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

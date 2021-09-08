@@ -1,0 +1,30 @@
+<ion-list>
+  <ion-list-header> Create Channel </ion-list-header>
+
+  <ion-item>
+    <ion-label position="stacked"> Name </ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked"> Group </ion-label>
+
+    <ion-select (ionChange)="groupChanged($event)">
+      <ion-select-option *ngFor="let group of groups">
+        {{ group.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-row class="ion-align-items-center">
+    <ion-col class="ion-text-center">
+      <ion-button
+        [disabled]="!name || !selectedGroup"
+        shape="round"
+        (click)="createChannel()"
+      >
+        Create Channel
+      </ion-button>
+    </ion-col>
+  </ion-row></ion-list
+>

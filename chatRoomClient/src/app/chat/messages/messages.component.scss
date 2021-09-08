@@ -1,0 +1,24 @@
+.messages-list {
+  .message {
+    width: 70%;
+    color: white;
+    margin-top: 12px;
+    border-radius: 20px;
+  }
+
+  .other-user {
+    float: left;
+    --background: black;
+  }
+
+  .current-user {
+    float: right;
+    --background: #3880ff;
+  }
+}
+
+.send-message {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

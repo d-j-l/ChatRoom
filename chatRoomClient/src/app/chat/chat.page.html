@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="currentUser">
+      Chat - Signed in as <strong>{{ currentUser.name }}</strong>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="logOut()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <!-- Groups -->
+    <ion-col size="2">
+      <ion-title> Groups </ion-title>
+
+      <ion-list>
+        <ion-item
+          *ngFor="let group of groups"
+          lines="none"
+          (click)="selectGroup(group)"
+          [class.selected]="selectedGroup && group.id === selectedGroup.id"
+        >
+          <ion-label>{{ group.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <div class="separator"></div>
+
+    <!-- Channels -->
+    <ion-col size="3">
+      <ion-title> Channels </ion-title>
+
+      <ion-row class="ion-align-items-center" *ngIf="!selectedGroup">
+        <ion-col class="ion-text-center">
+          <p>Select group on the left to see channels</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-list *ngIf="selectedGroup">
+        <ion-item
+          *ngFor="let channel of channels"
+          lines="none"
+          (click)="selectChannel(channel)"
+          [class.selected]="selectedChannel && channel.id === selectedChannel.id"
+        >
+          <ion-label>{{ channel.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <div class="separator"></div>
+
+    <!-- Messages -->
+    <ion-col size="6">
+      <ion-title> Messages </ion-title>
+
+      <ion-row class="ion-align-items-center" *ngIf="!selectedChannel">
+        <ion-col class="ion-text-center">
+          <p>Select channel on the left to see messages</p>
+        </ion-col>
+      </ion-row>
+
+      <app-messages #messages *ngIf="selectedChannel"></app-messages>
+    </ion-col>
+  </ion-row>
+</ion-content>
