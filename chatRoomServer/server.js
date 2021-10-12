@@ -34,7 +34,7 @@ var { User } = require("./models/User");
 var { Group } = require("./models/Group");
 var { Channel } = require("./models/Channel");
 
-mongoose.connect("mongodb://localhost:27017/chatRoom", (err) => {
+mongoose.connect("mongodb://localhost:27017/ChatRoom", (err) => {
   if (!err) console.log("mongodb connection");
   else
     console.log(
