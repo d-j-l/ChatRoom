@@ -88,7 +88,7 @@ export class AdminPage implements OnInit {
         // Assign parent group to channel
         this.channels.forEach((channel) => {
           channel.parentGroup = this.groups.find(
-            (x) => x.id === channel.groupId
+            (x) => x._id === channel.groupId
           );
         });
       });
@@ -148,7 +148,7 @@ export class AdminPage implements OnInit {
         this.http
           .post('http://localhost:8080/api/createChannel', {
             channelName: result.data.name,
-            groupId: result.data.group.id,
+            groupId: result.data.group._id,
           })
           .subscribe((data: any) => {
             if (data.success) {
@@ -156,7 +156,7 @@ export class AdminPage implements OnInit {
               const newChannel = data.newChannel;
 
               newChannel.parentGroup = this.groups.find(
-                (x) => x.id === newChannel.groupId
+                (x) => x._id === newChannel.groupId
               );
 
               this.channels.push(newChannel);
@@ -179,7 +179,7 @@ export class AdminPage implements OnInit {
 
         this.http
           .post('http://localhost:8080/api/changeRole', {
-            id: user.id,
+            _id: user._id,
             role,
           })
           .subscribe((data: any) => {
