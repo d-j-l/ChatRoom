@@ -29,163 +29,18 @@ sockets.connect(io, PORT);
 // start server listening for requests
 server.listen(http, PORT);
 
-var newUid = 100;
-var newGid = 200;
-var newCid = 300;
+const mongoose = require("mongoose");
+var { User } = require("./models/User");
+var { Group } = require("./models/Group");
+var { Channel } = require("./models/Channel");
 
-var users = [
-  {
-    id: 1,
-    name: "Super",
-    email: "super@email.com",
-    password: "super",
-    role: "Super Admin",
-  },
-  {
-    id: 2,
-    name: "Cedric",
-    email: "cedric@email.com",
-    password: "cedric",
-    role: "Group Admin",
-  },
-  {
-    id: 3,
-    name: "Dylan",
-    email: "dylan@email.com",
-    password: "dylan",
-    role: "Group Assis",
-  },
-  {
-    id: 4,
-    name: "Hayden",
-    email: "hayden@email.com",
-    password: "hayden",
-    role: "User",
-  },
-];
-
-var groups = [
-  {
-    id: 1,
-    name: "Group A",
-    users: [
-      {
-        id: 1,
-        name: "Super",
-        email: "super@email.com",
-        password: "super",
-        role: "Super Admin",
-      },
-      {
-        id: 2,
-        name: "Cedric",
-        email: "cedric@email.com",
-        password: "cedric",
-        role: "Group Admin",
-      },
-      {
-        id: 3,
-        name: "Dylan",
-        email: "dylan@email.com",
-        password: "dylan",
-        role: "Group Assis",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Group B",
-    users: [
-      {
-        id: 2,
-        name: "Cedric",
-        email: "cedric@email.com",
-        password: "cedric",
-        role: "Group Admin",
-      },
-      {
-        id: 3,
-        name: "Dylan",
-        email: "dylan@email.com",
-        password: "dylan",
-        role: "Group Assis",
-      },
-      {
-        id: 4,
-        name: "Hayden",
-        email: "hayden@email.com",
-        password: "hayden",
-        role: "User",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Group C",
-    users: [],
-  },
-];
-
-var channels = [
-  {
-    id: 1,
-    groupId: 1,
-    name: "Channel A1",
-    users: [
-      {
-        id: 2,
-        name: "Cedric",
-        email: "cedric@email.com",
-        password: "cedric",
-        role: "Group Admin",
-      },
-      {
-        id: 3,
-        name: "Dylan",
-        email: "dylan@email.com",
-        password: "dylan",
-        role: "Group Assis",
-      },
-    ],
-    messages: [],
-  },
-  {
-    id: 2,
-    groupId: 1,
-    name: "Channel A2",
-    users: [],
-    messages: [],
-  },
-  {
-    id: 3,
-    groupId: 2,
-    name: "Channel B1",
-    users: [
-      {
-        id: 2,
-        name: "Cedric",
-        email: "cedric@email.com",
-        password: "cedric",
-        role: "Group Admin",
-      },
-      {
-        id: 4,
-        name: "Hayden",
-        email: "hayden@email.com",
-        password: "hayden",
-        role: "User",
-      },
-    ],
-    messages: [],
-  },
-  {
-    id: 4,
-    groupId: 3,
-    name: "Channel C1",
-    users: [],
-    messages: [],
-  },
-];
+mongoose.connect("mongodb://localhost:27017/chatRoom", (err) => {
+  if (!err) console.log("mongodb connection");
+  else
+    console.log(
+      "error in mongdb connection : " + JSON.stringify(err, undefined, 2)
+    );
+});
 
 // login
 app.post("/api/login", function (req, res) {
@@ -195,39 +50,54 @@ app.post("/api/login", function (req, res) {
   var password = req.body.password;
 
   // find any user that matches the email address provided
-  var user = users.find((x) => {
-    return x.email === email;
-  });
+  User.find({ email: email }, (err, docs) => {
+    var user = docs[0];
 
-  // user found
-  if (user) {
-    // passwords match
-    if (user.password === password) {
-      res.json({ success: true, error: "", user: user });
+    // no users found
+    if (docs.length == 0) {
+      res.json({
+        success: false,
+        error: "Unable to find user with email provided",
+        user: null,
+      });
     }
 
-    // passwords do not match
+    // user found
     else {
-      res.json({ success: false, error: "Password is incorrect", user: null });
-    }
-  }
+      if (user) {
+        // passwords match
+        if (user.password === password) {
+          res.json({ success: true, error: "", user: user });
+        }
 
-  // no user found
-  else {
-    res.json({
-      success: false,
-      error: "Unable to find user with email provided",
-      user: null,
-    });
-  }
+        // passwords do not match
+        else {
+          res.json({
+            success: false,
+            error: "Password is incorrect",
+            user: null,
+          });
+        }
+      }
+
+      // no user found
+      else {
+        res.json({
+          success: false,
+          error: "Unable to find user with email provided",
+          user: null,
+        });
+      }
+    }
+  });
 });
 
 // get all users
 app.get("/api/users", function (req, res) {
   console.log("getting all users...");
 
-  res.json({
-    users: users,
+  User.find((err, docs) => {
+    res.json({ users: docs });
   });
 });
 
@@ -235,46 +105,46 @@ app.get("/api/users", function (req, res) {
 app.post("/api/groupUsers", function (req, res) {
   console.log("getting all group users...");
 
-  const group = groups.find((x) => x.id == req.body.id);
-
-  if (group) {
-    res.json({
-      success: true,
-      groupUsers: group.users,
-    });
-  } else {
-    res.json({
-      success: false,
-      groupUsers: [],
-    });
-  }
+  Group.findById(req.body._id, (err, group) => {
+    if (group) {
+      res.json({
+        success: true,
+        groupUsers: group.users,
+      });
+    } else {
+      res.json({
+        success: false,
+        groupUsers: [],
+      });
+    }
+  });
 });
 
 // get channel's users
 app.post("/api/channelUsers", function (req, res) {
   console.log("getting all channel users...");
 
-  const channel = channels.find((x) => x.id == req.body.id);
-
-  if (channel) {
-    res.json({
-      success: true,
-      channelUsers: channel.users,
-    });
-  } else {
-    res.json({
-      success: false,
-      channelUsers: [],
-    });
-  }
+  Channel.findById(req.body._id, (err, channel) => {
+    if (channel) {
+      res.json({
+        success: true,
+        channelUsers: channel.users,
+      });
+    } else {
+      res.json({
+        success: false,
+        channelUsers: [],
+      });
+    }
+  });
 });
 
 // get all groups
 app.get("/api/groups", function (req, res) {
   console.log("getting all groups...");
 
-  res.json({
-    groups: groups,
+  Group.find((err, docs) => {
+    res.json({ groups: docs });
   });
 });
 
@@ -282,20 +152,22 @@ app.get("/api/groups", function (req, res) {
 app.post("/api/groupsForUser", function (req, res) {
   console.log("getting all groups user belongs to...");
 
-  const user = users.find((x) => x.id == req.body.id);
+  User.findById(req.body._id, (err1, user) => {
+    var groupsForUser = [];
 
-  var groupsForUser = [];
+    Group.find((err2, groups) => {
+      groups.forEach((group) => {
+        const groupUser = group.users.find((y) => y._id.equals(user._id));
 
-  groups.forEach((group) => {
-    const groupUser = group.users.find((y) => y.id == user.id);
+        if (groupUser) {
+          groupsForUser.push(group);
+        }
+      });
 
-    if (groupUser) {
-      groupsForUser.push(group);
-    }
-  });
-
-  res.json({
-    groupsForUser: groupsForUser,
+      res.json({
+        groupsForUser: groupsForUser,
+      });
+    });
   });
 });
 
@@ -303,8 +175,8 @@ app.post("/api/groupsForUser", function (req, res) {
 app.get("/api/channels", function (req, res) {
   console.log("getting all channels...");
 
-  res.json({
-    channels: channels,
+  Channel.find((err, docs) => {
+    res.json({ channels: docs });
   });
 });
 
@@ -314,25 +186,30 @@ app.post("/api/channelsForUser", function (req, res) {
     "getting all channels the user belongs to for the specified group..."
   );
 
-  const group = users.find((x) => x.id == req.body.group.id);
-  const user = users.find((x) => x.id == req.body.user.id);
+  Group.findById(req.body.group._id, (err1, group) => {
+    User.findById(req.body.user._id, (err2, user) => {
+      var channelsForUser = [];
 
-  var channelsForUser = [];
+      Channel.find((err3, channels) => {
+        channels.forEach((channel) => {
+          // Check if channel belongs to specified group first
+          if (group._id.equals(channel.groupId)) {
+            // Check that user is part of this channel
+            const channelUser = channel.users.find((y) =>
+              y._id.equals(user._id)
+            );
 
-  channels.forEach((channel) => {
-    // Check if channel belongs to specified group first
-    if (group.id === channel.groupId) {
-      // Check that user is part of this channel
-      const channelUser = channel.users.find((y) => y.id == user.id);
+            if (channelUser) {
+              channelsForUser.push(channel);
+            }
+          }
+        });
 
-      if (channelUser) {
-        channelsForUser.push(channel);
-      }
-    }
-  });
-
-  res.json({
-    channelsForUser: channelsForUser,
+        res.json({
+          channelsForUser: channelsForUser,
+        });
+      });
+    });
   });
 });
 
@@ -340,19 +217,20 @@ app.post("/api/channelsForUser", function (req, res) {
 app.post("/api/createUser", function (req, res) {
   console.log("creating user...");
 
-  var newUser = {
-    id: newUid++,
+  var newUser = new User({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
-  };
+  });
 
-  users.push(newUser);
-
-  res.json({
-    success: true,
-    newUser: newUser,
+  newUser.save((err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+        newUser: newUser,
+      });
+    }
   });
 });
 
@@ -360,17 +238,18 @@ app.post("/api/createUser", function (req, res) {
 app.post("/api/createGroup", function (req, res) {
   console.log("creating group...");
 
-  var newGroup = {
-    id: newGid++,
+  var newGroup = new Group({
     name: req.body.name,
     users: [],
-  };
+  });
 
-  groups.push(newGroup);
-
-  res.json({
-    success: true,
-    newGroup: newGroup,
+  newGroup.save((err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+        newGroup: newGroup,
+      });
+    }
   });
 });
 
@@ -378,19 +257,20 @@ app.post("/api/createGroup", function (req, res) {
 app.post("/api/createChannel", function (req, res) {
   console.log("creating channel...");
 
-  var newChannel = {
-    id: newCid++,
+  var newChannel = new Channel({
     groupId: req.body.groupId,
     name: req.body.channelName,
     users: [],
     messages: [],
-  };
+  });
 
-  channels.push(newChannel);
-
-  res.json({
-    success: true,
-    newChannel: newChannel,
+  newChannel.save((err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+        newChannel: newChannel,
+      });
+    }
   });
 });
 
@@ -398,232 +278,237 @@ app.post("/api/createChannel", function (req, res) {
 app.post("/api/deleteUser", function (req, res) {
   console.log("deleting user...");
 
-  const index = users.findIndex((user) => user.id == req.body.id);
-
-  if (index > -1) {
-    users.splice(index, 1);
-
-    res.json({
-      success: true,
-    });
-  } else {
-    res.json({
-      success: false,
-    });
-  }
+  User.findByIdAndRemove(req.body._id, (err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+      });
+    } else {
+      res.json({
+        success: false,
+      });
+    }
+  });
 });
 
 // delete group
 app.post("/api/deleteGroup", function (req, res) {
   console.log("deleting group...");
 
-  const index = groups.findIndex((group) => group.id == req.body.id);
-
-  if (index > -1) {
-    groups.splice(index, 1);
-
-    res.json({
-      success: true,
-    });
-  } else {
-    res.json({
-      success: false,
-    });
-  }
+  Group.findByIdAndRemove(req.body._id, (err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+      });
+    } else {
+      res.json({
+        success: false,
+      });
+    }
+  });
 });
 
 // delete channel
 app.post("/api/deleteChannel", function (req, res) {
   console.log("deleting channel...");
 
-  const index = channels.findIndex((channel) => channel.id == req.body.id);
-
-  if (index > -1) {
-    channels.splice(index, 1);
-
-    res.json({
-      success: true,
-    });
-  } else {
-    res.json({
-      success: false,
-    });
-  }
+  Channel.findByIdAndRemove(req.body._id, (err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+      });
+    } else {
+      res.json({
+        success: false,
+      });
+    }
+  });
 });
 
 // add user to group
 app.post("/api/addGroupUser", function (req, res) {
   console.log("adding user to group...");
 
-  var userId = req.body.user.id;
-  var user = users.find((x) => {
-    return x.id === userId;
-  });
+  var userId = req.body.user._id;
+  var groupId = req.body.group._id;
 
-  var groupId = req.body.group.id;
-  var group = groups.find((x) => {
-    return x.id === groupId;
-  });
+  User.findById(userId, (err1, user) => {
+    Group.findById(groupId, (err2, group) => {
+      if (!user || !group) {
+        res.json({
+          success: false,
+        });
+      } else {
+        group.users.push(user);
 
-  if (!user || !group) {
-    res.json({
-      success: false,
+        Group.findByIdAndUpdate(
+          groupId,
+          { users: group.users },
+          (err3, docs) => {
+            res.json({
+              success: true,
+            });
+          }
+        );
+      }
     });
-  } else {
-    group.users.push(user);
-
-    res.json({
-      success: true,
-    });
-  }
+  });
 });
 
 // remove user from group
 app.post("/api/removeGroupUser", function (req, res) {
   console.log("removing user from group...");
 
-  var userId = req.body.user.id;
-  var user = users.find((x) => {
-    return x.id === userId;
-  });
+  var userId = req.body.user._id;
+  var groupId = req.body.group._id;
 
-  var groupId = req.body.group.id;
-  var group = groups.find((x) => {
-    return x.id === groupId;
-  });
+  User.findById(userId, (err1, user) => {
+    Group.findById(groupId, (err2, group) => {
+      if (!user || !group) {
+        res.json({
+          success: false,
+        });
+      } else {
+        const index = group.users.findIndex((x) => x._id.equals(user._id));
 
-  if (!user || !group) {
-    res.json({
-      success: false,
+        if (index > -1) {
+          group.users.splice(index, 1);
+        }
+
+        Group.findByIdAndUpdate(
+          groupId,
+          { users: group.users },
+          (err3, docs) => {
+            res.json({
+              success: true,
+            });
+          }
+        );
+      }
     });
-  } else {
-    const index = group.users.findIndex((x) => x.id == user.id);
-    if (index > -1) {
-      group.users.splice(index, 1);
-    }
-
-    res.json({
-      success: true,
-    });
-  }
+  });
 });
 
 // add user to channel
 app.post("/api/addChannelUser", function (req, res) {
   console.log("adding user to channel...");
 
-  var userId = req.body.user.id;
-  var user = users.find((x) => {
-    return x.id === userId;
-  });
+  var userId = req.body.user._id;
+  var channelId = req.body.channel._id;
 
-  var channelId = req.body.channel.id;
-  var channel = channels.find((x) => {
-    return x.id === channelId;
-  });
+  User.findById(userId, (err1, user) => {
+    Channel.findById(channelId, (err2, channel) => {
+      if (!user || !channel) {
+        res.json({
+          success: false,
+        });
+      } else {
+        channel.users.push(user);
 
-  if (!user || !channel) {
-    res.json({
-      success: false,
+        Channel.findByIdAndUpdate(
+          channelId,
+          { users: channel.users },
+          (err3, docs) => {
+            res.json({
+              success: true,
+            });
+          }
+        );
+      }
     });
-  } else {
-    channel.users.push(user);
-
-    res.json({
-      success: true,
-    });
-  }
+  });
 });
 
 // remove user from channel
 app.post("/api/removeChannelUser", function (req, res) {
   console.log("removing user from channel...");
 
-  var userId = req.body.user.id;
-  var user = users.find((x) => {
-    return x.id === userId;
-  });
+  var userId = req.body.user._id;
+  var channelId = req.body.channel._id;
 
-  var channelId = req.body.channel.id;
-  var channel = channels.find((x) => {
-    return x.id === channelId;
-  });
+  User.findById(userId, (err1, user) => {
+    Channel.findById(channelId, (err2, channel) => {
+      if (!user || !channel) {
+        res.json({
+          success: false,
+        });
+      } else {
+        const index = channel.users.findIndex((x) => x._id.equals(user._id));
+        if (index > -1) {
+          channel.users.splice(index, 1);
+        }
 
-  if (!user || !channel) {
-    res.json({
-      success: false,
+        Channel.findByIdAndUpdate(
+          channelId,
+          { users: channel.users },
+          (err3, docs) => {
+            res.json({
+              success: true,
+            });
+          }
+        );
+      }
     });
-  } else {
-    const index = channel.users.findIndex((x) => x.id == user.id);
-    if (index > -1) {
-      channel.users.splice(index, 1);
-    }
-
-    res.json({
-      success: true,
-    });
-  }
+  });
 });
 
 // edit role
 app.post("/api/changeRole", function (req, res) {
   console.log("editing role...");
 
-  var id = req.body.id;
+  var id = req.body._id;
   var role = req.body.role;
 
   // find any user that matches the id
-  var user = users.find((x) => {
-    return x.id === id;
+  User.findByIdAndUpdate(id, { role: role }, (err, docs) => {
+    if (!err) {
+      res.json({
+        success: true,
+      });
+    } else {
+      res.json({
+        success: false,
+      });
+    }
   });
-
-  if (user) {
-    user.role = role;
-
-    res.json({
-      success: true,
-    });
-  } else {
-    res.json({
-      success: false,
-    });
-  }
 });
 
 // get messages
 app.post("/api/messages", function (req, res) {
   console.log("getting messages...");
 
-  var channel = channels.find((x) => {
-    return x.id === req.body.channel.id;
+  Channel.findById(req.body.channel._id, (err, channel) => {
+    if (!channel) {
+      res.json({
+        success: false,
+        messages: [],
+      });
+    } else {
+      res.json({
+        success: true,
+        messages: channel.messages,
+      });
+    }
   });
-
-  if (!channel) {
-    res.json({
-      success: false,
-      messages: [],
-    });
-  } else {
-    res.json({
-      success: true,
-      messages: channel.messages,
-    });
-  }
 });
 
 // send messages
 app.post("/api/sendMessage", function (req, res) {
   console.log("sending message...");
 
-  var channel = channels.find((x) => {
-    return x.id === req.body.channel.id;
-  });
+  var channelId = req.body.channel._id;
 
-  if (channel) {
+  Channel.findById(channelId, (err1, channel) => {
     channel.messages.push(req.body.message);
-  }
 
-  res.json({
-    success: true,
+    Channel.findByIdAndUpdate(
+      channelId,
+      { messages: channel.messages },
+      (err2, docs) => {
+        res.json({
+          success: true,
+        });
+      }
+    );
   });
 });
