@@ -95,7 +95,7 @@ app.post("/api/login", function (req, res) {
 // get all users
 app.get("/api/users", function (req, res) {
   console.log("getting all users...");
-
+  
   User.find((err, docs) => {
     res.json({ users: docs });
   });
@@ -512,3 +512,5 @@ app.post("/api/sendMessage", function (req, res) {
     );
   });
 });
+
+module.exports = app;
