@@ -11,10 +11,6 @@ install dependencies with "npm install" and start client app with "ng serve".
 
 # server side data structure
 
-### users, var users
-Stored as objects with properties written in name: value pairs separated by commas held within an array literal. 
-Properties include id, name, email, password and role.
-
 ### uploads, /uploads
 Files uploaded via the application are stored in the uploads folder.
 
