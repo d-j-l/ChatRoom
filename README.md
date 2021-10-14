@@ -1,4 +1,4 @@
-# phase2-imageupload
+# phase2
 3813ICT Software Frameworks - Assignment 2 - server and front end for a chat system.
 
 ### server
