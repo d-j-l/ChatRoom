@@ -23,15 +23,35 @@
   <ion-input
     type="text"
     placeholder="Write a message"
-    [(ngModel)]="messageContent"
-  ></ion-input>
+    [(ngModel)]="messageContent">
+  </ion-input>
+  <ion-button
+  slot="start"
+  shape="round"
+  [disabled]="!messageContent"
+  (click)="sendMessage()">
+  Send Message
+  </ion-button>
 
+  <ion-input 
+    type ="file"
+    [(ngModel)]="fileContent"
+    (change)="createFormData($event)">
+  </ion-input>
   <ion-button
     slot="end"
     shape="round"
-    [disabled]="!messageContent"
-    (click)="sendMessage()"
-  >
-    Send
+    [disabled]="!fileContent"
+    (click)="upload()">
+    Upload
   </ion-button>
+
+<ion-button
+  slot="end"
+  shape="round"
+  [disabled]="!fileContent"
+  (click)="sendFile()">
+  Send File
+</ion-button>
+
 </ion-item>

@@ -11,12 +11,16 @@ import { SocketService } from 'src/services/SocketService/socket.service';
   styleUrls: ['./messages.component.scss'],
 })
 export class MessagesComponent implements OnInit {
+  
   public messageContent = '';
   public messages: string[] = [];
 
   private ioConnection: any;
   private currentUser: any;
   private channel: any;
+
+  private selectedFile: File;
+  fd = new FormData();
 
   constructor(
     private socketService: SocketService,
@@ -70,4 +74,39 @@ export class MessagesComponent implements OnInit {
       this.messageContent = null;
     }
   }
+//////////////////////////////////////////////////////////////////////////////////////////////
+  createFormData(event) {
+    this.selectedFile = <File>event.target.files[0];
+    this.fd.append('file', this.selectedFile, this.selectedFile.name);
+  }
+
+  upload() {
+    this.http.post('http://localhost:8080/api/upload', this.fd)
+      .subscribe( result => {
+        console.log(result);
+      });
+  }
+
+  sendFile() {
+    if (this.selectedFile) {
+      console.log(this.selectedFile);
+
+      const file = {
+        userId: this.currentUser.id,
+        userName: this.currentUser.name,
+        content: this.selectedFile.name,
+      };
+
+      this.socketService.send(file);
+
+/*       this.http.post('http://localhost:8080/api/sendFile', {
+        channel: this.channel,
+        file,
+      }); */
+
+      this.selectedFile = null;
+    }
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 }

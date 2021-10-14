@@ -33,6 +33,7 @@ const mongoose = require("mongoose");
 var { User } = require("./models/User");
 var { Group } = require("./models/Group");
 var { Channel } = require("./models/Channel");
+var { Upload } = require("./models/Upload")
 
 mongoose.connect("mongodb://localhost:27017/ChatRoom", (err) => {
   if (!err) console.log("mongodb connection");
@@ -41,6 +42,46 @@ mongoose.connect("mongodb://localhost:27017/ChatRoom", (err) => {
       "error in mongdb connection : " + JSON.stringify(err, undefined, 2)
     );
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+var multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function(req, file, callback) {
+    callback(null, file.originalname)
+  }
+});
+
+const upload = multer({
+  storage:storage
+});
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+  console.log('uploading file...');
+
+  var upload = new Upload({
+    filename: req.file.filename,
+    path: req.file.path,
+  });
+  upload.save((err, doc) => {
+    if (!err) {
+      res.json({
+        success: true,
+        upload: upload,
+      });
+    }
+  });
+});
+
+/* app.post("/api/sendFile", function (req, res) {
+  console.log("sending file...");
+  console.log(req);
+
+}); */
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 // login
 app.post("/api/login", function (req, res) {

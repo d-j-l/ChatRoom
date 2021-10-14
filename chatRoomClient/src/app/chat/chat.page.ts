@@ -54,7 +54,6 @@ export class ChatPage implements OnInit {
       })
       .subscribe((data: any) => {
         this.channels = data.channelsForUser;
-        console.log(this.channels);
       });
   }
 
