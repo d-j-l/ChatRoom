@@ -1,4 +1,4 @@
-# phase1
+# phase2-mongodb
 3813ICT Software Frameworks - Assignment 1 - server and front end for a chat system.
 
 ### server
