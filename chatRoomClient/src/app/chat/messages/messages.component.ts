@@ -85,6 +85,8 @@ export class MessagesComponent implements OnInit {
       .subscribe( result => {
         console.log(result);
       });
+      
+      this.selectedFile = null;
   }
 
   sendFile() {
@@ -99,14 +101,14 @@ export class MessagesComponent implements OnInit {
 
       this.socketService.send(file);
 
+      this.selectedFile = null;
+
 /*       this.http.post('http://localhost:8080/api/sendFile', {
         channel: this.channel,
         file,
       }); */
-
-      this.selectedFile = null;
     }
   }
-//////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////
 
 }

@@ -537,7 +537,6 @@ app.post("/api/messages", function (req, res) {
 // send messages
 app.post("/api/sendMessage", function (req, res) {
   console.log("sending message...");
-
   var channelId = req.body.channel._id;
 
   Channel.findById(channelId, (err1, channel) => {
