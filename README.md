@@ -1,5 +1,5 @@
 # phase2-mongodb
-3813ICT Software Frameworks - Assignment 1 - server and front end for a chat system.
+3813ICT Software Frameworks - Assignment 2 - server and front end for a chat system.
 
 ### server
 contains files required for communcation between client and server including web sockets.
