@@ -33,55 +33,64 @@ a library of optimized user interface components written in HTML, CSS and Javasc
 
 ### components
 
-admin
+admin,
 allows view of users, groups and channels depending on permissions given by user role.
 
-channel-creator
+channel-creator,
 allowing text input for new channel name and drop down menu assigning channel to group.
 
-channel-users
+channel-users,
 add user to channel from drop down menu, view channel users and their corresponding email and role as well as the option to remove user from channel.
 
-group-creator
+group-creator,
 allowing text input for new group.
 
-group-users
+group-users,
 add user to group from drop down menu, view group users and their corresponding email and role as well as the option to remove user from group.
 
-role-editor
+role-editor,
 edit role of user from drop down menu.
 
-user-creator
+user-creator,
 allowing text input for the creation of a new user, with name, email and password, with drop down menu to select role.
 
-chat
+chat,
 allows view of groups, users and messages depending on access given to the user.
 
-messages
+messages,
 view for sending and recieving messages.
 
-login
+login,
 allows text input for user email and password, providing user authentication. 
 
-tabs
+tabs,
 allows switching between admin and chat components. 
 
 ### services
 
-socket.service
+socket.service,
 containing methods to initialise a socket, send and receive messages. 
 
 ### models
 
 AdminPage
+
 ChannelCreatorPage
+
 ChannelUsersPage
+
 GroupCreatorPage
+
 GroupUsersPage
+
 RoleEditorPage
+
 UserCreatorPage
+
 ChatPage
+
 LoginPage
+
 TabsPage
 
 ### routes
@@ -101,112 +110,112 @@ path: ‘admin‘, loadChildren: () => import(‘./admin/admin.module’).then((
 
 ### modules
 
-express
+express,
 web application framework for Node.js.
 
-cors
+cors,
 cross-origin resource sharing, providing relaxed security applied to an API (application programming interface, a connection between computers). 
 
-http
+http,
 allows Node.js to transfer data over the Hypertext Transfer Protocol (HTTP).
 
-socket.io
+socket.io,
 allows realtime, bi-directional communication between web clients and servers.
 
-body-parser
+body-parser,
 responsible for parsing incoming request bodies in a middleware before it is handled.
 
 ### functions
 
-login, /api/login
+login, /api/login,
 provides user authentication.
 
-get all users, /api/users
+get all users, /api/users,
 returns all users.
 
-get group’s users, /api/groupUsers
+get group’s users, /api/groupUsers,
 returns users of a group.
 
-get channel’s users, /api/channelUsers
+get channel’s users, /api/channelUsers,
 returns users of a channel.
 
-get all groups, /api/groups
+get all groups, /api/groups,
 returns all groups.
 
-get all groups that provided user belongs to, /api/groupsForUser
+get all groups that provided user belongs to, /api/groupsForUser,
 returns groups a user belongs to.
 
 get all channels, /api/channels
 returns all channels.
 
-get all channels the user belongs to for the specified group, /api/channelsForUser 
+get all channels the user belongs to for the specified group, /api/channelsForUser,
 returns channels a user belongs inside the group.
 
-create new user, /api/createUser 
+create new user, /api/createUser,
 adds a user to the users array.
 
-create new group, /api/createGroup 
+create new group, /api/createGroup, 
 adds a group to the groups array.
 
-create new channel, /api/createChannel 
+create new channel, /api/createChannel, 
 adds a channel to the channels array.
 
-delete user, /api/deleteUser 
+delete user, /api/deleteUser, 
 removes user from users array.
 
-delete group, /api/deleteGroup 
+delete group, /api/deleteGroup, 
 removes group from groups array.
 
-delete channel, /api/deleteChannel 
+delete channel, /api/deleteChannel, 
 removes channel from channels array.
 
-add user to group, /api/deleteGroupUser 
+add user to group, /api/deleteGroupUser, 
 adds a user to the users array inside the groups array. 
 
-remove user from group, /api/removeGroupUser
+remove user from group, /api/removeGroupUser,
 removes a user from the users array inside the groups array.
 
-add user to channel, /api/addChannelUser
+add user to channel, /api/addChannelUser,
 adds a user to the users array inside the channels array.
 
-remove user from channel, /api/removeChannelUser 
+remove user from channel, /api/removeChannelUser, 
 removes a user from the users array inside the channels array.
 
-edit role, /api/changeRole 
+edit role, /api/changeRole, 
 changes the role of a user of the users array.
 
-get messages, /api/messages 
+get messages, /api/messages, 
 returns messages of a channel.
 
-send messages, /api/sendMessage
+send messages, /api/sendMessage,
 sends messages to a channel. 
 
 ### files
 
-server.js
+server.js,
 main server file containing all the necessary modules (body-parser, cors, express, socket.io), applying modules, defining ports, socket setup, data structures (users, groups, channels), global variables and functions.
 
-_listen.js
+_listen.js,
 setup to listen to requests on port.
 
-_socket.js
+_socket.js,
 setup to handle requests, respond to message events and emit data to connected clients. 
 
-package.json
+package.json,
 lists the dependencies of the server.
 
 ### global variables
 	
-newUid
+newUid,
 new user id, used when calling the create new user function.
 
-newGid
+newGid,
 new group id, used when calling the create new group function.
 
-newCid
+newCid,
 new channel id, used when calling the create new channel function.
 
-PORT
+PORT,
 defining the port used for the server. 
 
 ### routes
